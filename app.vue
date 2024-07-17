@@ -1,31 +1,37 @@
 <template>
   <div class="body">
     <h1>Todo App</h1>
-    <div class="card">
+    <div v-for="task in tasks" :id="task.id" class="card">
       <ul>
-        <li>Status: Pending</li>
-        <li>Title: タスク1</li>
-        <li>Created At: 2024/7/17</li>
-      </ul>
-    </div>
-    <div class="card">
-      <ul>
-        <li>Status: Working</li>
-        <li>Title: タスク2</li>
-        <li>Created At: 2024/7/18</li>
-      </ul>
-    </div>
-    <div class="card">
-      <ul>
-        <li>Status: Completed</li>
-        <li>Title: タスク3</li>
-        <li>Created At: 2024/7/19</li>
+        <li>Status: {{ task.status }}</li>
+        <li>Title: {{ task.title }}</li>
+        <li>Created At: {{ task.created_at.toLocaleDateString() }}</li>
       </ul>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+const tasks = [
+  {
+    id: 1,
+    status: 'pending',
+    title: 'タスク1',
+    created_at: new Date('2024-7-17')
+  },
+  {
+    id: 2,
+    status: 'working',
+    title: 'タスク2',
+    created_at: new Date('2024-7-18')
+  },
+  {
+    id: 1,
+    status: 'completed',
+    title: 'タスク3',
+    created_at: new Date('2024-7-19')
+  }
+]
 </script>
 
 <style>
