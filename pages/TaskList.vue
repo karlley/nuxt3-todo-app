@@ -7,17 +7,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { useStorage } from '@vueuse/core';
 import TaskCard from './TaskCard.vue';
 
-const tasks = ref([]);
-
-onMounted(() => {
-  const storedTasks = localStorage.getItem('tasks');
-  if (storedTasks) {
-    tasks.value = JSON.parse(storedTasks);
-  } else {
-    tasks.value = [
+const tasks = useStorage('tasks', [
       {
         id: 1,
         status: 'pending',
@@ -31,14 +24,17 @@ onMounted(() => {
         created_at: new Date('2024-7-18')
       },
       {
-        id: 1,
+        id: 3,
         status: 'completed',
         title: 'タスク3',
         created_at: new Date('2024-7-19')
       }
-    ]
-  }
-})
+    ]);
+
+//文字列から日付オブジェクトに変換
+tasks.value = tasks.value.map(task => ({
+  ...task, created_at: new Date(task.created_at)
+}));
 </script>
 
 <style>
