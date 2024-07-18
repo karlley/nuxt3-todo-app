@@ -1,6 +1,6 @@
 <template>
-  <div class="list">
-    <div v-for="task in tasks" :key="task.id" class="card">
+  <div class="task-list">
+    <div v-for="task in tasks" :key="task.id" class="task">
       <ul>
         <li>Status: {{ task.status }}</li>
         <li>Title: {{ task.title }}</li>
@@ -41,23 +41,23 @@ tasks.value = tasks.value.map(task => ({
 </script>
 
 <style>
-.list {
+.task-list {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.card {
-   border: 1px solid black;
-   width: 250px;
-   margin-bottom: 20px;
- }
+.task {
+  border: 1px solid black;
+  width: 250px;
+  margin-bottom: 20px;
+}
 
-.card ul {
+.task ul {
   list-style-type: none;
 }
 
-.card li {
+.task li {
   margin-top: 5px;
   margin-bottom: 5px;
 }
