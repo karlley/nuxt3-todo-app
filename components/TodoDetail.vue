@@ -1,5 +1,5 @@
 <template>
-  <div class="todo-wrapper">
+  <div class="wrapper">
     <div class="todo">
       <ul>
         <li>Status: {{ todo.status }}</li>
@@ -26,9 +26,4 @@ const todo = todos.value.find((todo) => todo.id === id);
 </script>
 
 <style>
-.todo-wrapper button {
-  background: inherit;
-  border: 1px solid black;
-  padding: 5px 10px;
-}
 </style>

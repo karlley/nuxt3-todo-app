@@ -1,7 +1,12 @@
 <template>
-  <div class="todo-wrapper">
+  <div class="wrapper">
+    <div>
+      <NuxtLink :to="`/todos/new`">
+        <button>New</button>
+      </NuxtLink>
+    </div>
     <div v-for="todo in todos" :key="todo.id" class="todo">
-      <NuxtLink :to="`/todos/${todo.id}`" class="todo-link">
+      <NuxtLink :to="`/todos/${todo.id}`" class="link">
       <ul>
         <li>Status: {{ todo.status }}</li>
         <li>Title: {{ todo.title }}</li>
@@ -34,13 +39,20 @@ const todos = useStorage('todos', [
 </script>
 
 <style>
-.todo-wrapper {
+.wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.todo-link {
+.wrapper button {
+  background: inherit;
+  padding: 5px 10px;
+  border: 1px solid black;
+  margin: 30px 20px;
+}
+
+.link {
   text-decoration: none;
   color: inherit; /* 親要素から色を継承 */
 }
