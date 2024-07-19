@@ -6,6 +6,11 @@
         <li>Title: {{ todo.title }}</li>
       </ul>
     </div>
+    <div>
+      <NuxtLink :to="`/todos`">
+        <button>Back</button>
+      </NuxtLink>
+    </div>
   </div>
 </template>
 
@@ -21,4 +26,9 @@ const todo = todos.value.find((todo) => todo.id === id);
 </script>
 
 <style>
+.todo-wrapper button {
+  background: inherit;
+  border: 1px solid black;
+  padding: 5px 10px;
+}
 </style>
