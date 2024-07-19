@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h2>List</h2>
-    <TodoList />
+    <h2>Detail</h2>
+    <TodoDetail />
   </div>
 </template>
 

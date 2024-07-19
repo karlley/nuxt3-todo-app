@@ -1,9 +1,9 @@
 <template>
-  <div class="task-list">
-    <div v-for="task in tasks" :key="task.id" class="task">
+  <div class="todo-wrapper">
+    <div v-for="todo in todos" :key="todo.id" class="todo">
       <ul>
-        <li>Status: {{ task.status }}</li>
-        <li>Title: {{ task.title }}</li>
+        <li>Status: {{ todo.status }}</li>
+        <li>Title: {{ todo.title }}</li>
       </ul>
     </div>
   </div>
@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core';
 
-const tasks = useStorage('tasks', [
+const todos = useStorage('todos', [
   {
     id: 1,
     status: 'pending',
@@ -32,23 +32,23 @@ const tasks = useStorage('tasks', [
 </script>
 
 <style>
-.task-list {
+.todo-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.task {
+.todo {
   border: 1px solid black;
   width: 250px;
   margin-bottom: 20px;
 }
 
-.task ul {
+.todo ul {
   list-style-type: none;
 }
 
-.task li {
+.todo li {
   margin-top: 5px;
   margin-bottom: 5px;
 }

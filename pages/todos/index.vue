@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Todo App</h1>
+    <h2>List</h2>
     <TodoList />
   </div>
 </template>
@@ -9,7 +9,7 @@
 </script>
 
 <style>
-h1 {
+h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
