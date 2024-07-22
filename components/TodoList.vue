@@ -13,7 +13,9 @@
       </ul>
       </NuxtLink>
       <div class="todo-button">
-        <button>Edit</button>
+        <NuxtLink :to="`/todos/${todo.id}/edit`">
+          <button>Edit</button>
+        </NuxtLink>
         <button @click="deleteTodo(todo.id)">Delete</button>
       </div>
     </div>
