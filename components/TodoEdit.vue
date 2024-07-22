@@ -22,26 +22,37 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core'
 import { reactive } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+
+type Todo = {
+  id: number;
+  status: 'pending' | 'working' | 'completed';
+  title: string;
+}
+
+type InputForm = {
+  title: string;
+  status: 'pending' | 'working' | 'completed';
+}
 
 //idパラメータ取得
 const route = useRoute();
-const id = Number(route.params.id);
+const selectedTodoId = Number(route.params.id);
 
 //対象todo取得
-const todos = useStorage('todos', [])
-const todo = todos.value.find((todo) => todo.id === id);
+const todos = useStorage<Todo[]>('todos', [])
+const todo = todos.value.find((todo) => todo.id === selectedTodoId);
 
 //フォームに対象todoの値をセット
-const inputForm = reactive({
-  title: todo.title,
-  status: todo.status
+const inputForm = reactive<InputForm>({
+  title: todo?.title ?? '',
+  status: todo?.status ?? 'pending'
 })
 
 const router = useRouter();
 
-const updateTodo = () => {
-  const index = todos.value.findIndex((todo) => todo.id === id);
+const updateTodo = (): void => {
+  const index = todos.value.findIndex((todo) => todo.id === selectedTodoId);
   //findIndexの返り値でtodoの存在確認(アンマッチ時は-1)
   if (index !== -1) {
     //対象todoのプロパティを保持しながら更新

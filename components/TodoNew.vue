@@ -24,24 +24,35 @@ import { useStorage } from '@vueuse/core'
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 
+type Todo = {
+  id: number;
+  status: 'pending' | 'working' | 'completed';
+  title: string;
+}
+
+type InputForm = {
+  title: string;
+  status: 'pending' | 'working' | 'completed';
+}
+
 //フォームからの値を受ける
-const inputForm = reactive({
+const inputForm = reactive<InputForm>({
   title: '',
-  status: ''
+  status: 'pending'
 })
-const todos = useStorage('todos', [])
+const todos = useStorage<Todo[]>('todos', [])
 const router = useRouter();
 
-const addTodo = () => {
-  const newId = todos.value.length + 1;
-  const newTodo = {
-    id: newId,
+const addTodo = (): void => {
+  const newTodoId = todos.value.length + 1;
+  const newTodo: Todo = {
+    id: newTodoId,
     title: inputForm.title,
     status: inputForm.status,
   }
   todos.value.push(newTodo)
   inputForm.title = '';
-  inputForm.status = '';
+  inputForm.status = 'pending';
   router.push('/todos');
 }
 </script>

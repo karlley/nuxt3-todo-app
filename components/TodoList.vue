@@ -25,7 +25,13 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core';
 
-const todos = useStorage('todos', [
+type Todo = {
+  id: number;
+  status: 'pending' | 'working' | 'completed';
+  title: string;
+}
+
+const todos = useStorage<Todo[]>('todos', [
   {
     id: 1,
     status: 'pending',
@@ -43,7 +49,7 @@ const todos = useStorage('todos', [
   }
 ]);
 
-const deleteTodo = (deleteId) => {
+const deleteTodo = (deleteId: number): void => {
   todos.value = todos.value.filter(todo => todo.id !== deleteId);
 }
 
