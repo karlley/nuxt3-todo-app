@@ -12,6 +12,10 @@
         <li>Title: {{ todo.title }}</li>
       </ul>
       </NuxtLink>
+      <div class="todo-button">
+        <button>Edit</button>
+        <button @click="deleteTodo(todo.id)">Delete</button>
+      </div>
     </div>
   </div>
 </template>
@@ -36,6 +40,11 @@ const todos = useStorage('todos', [
     title: 'タスク3',
   }
 ]);
+
+const deleteTodo = (deleteId) => {
+  todos.value = todos.value.filter(todo => todo.id !== deleteId);
+}
+
 </script>
 
 <style>
@@ -72,5 +81,14 @@ const todos = useStorage('todos', [
   margin: 0;
   padding-top: 5px;
   padding-bottom: 5px;
+}
+
+.todo-button {
+  display: flex;
+  justify-content: space-around;
+}
+
+.todo-button button {
+  margin: 10px;
 }
 </style>
