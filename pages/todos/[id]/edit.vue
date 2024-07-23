@@ -1,6 +1,8 @@
 <template>
-  <h2>Edit</h2>
-  <TodoEdit />
+  <div>
+    <h2>Edit</h2>
+    <TodoEdit />
+  </div>
 </template>
 
 <script setup lang="ts">

@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { useStorage } from '@vueuse/core';
+import { useStorage } from '@vueuse/core'
 
 type Todo = {
   id: number;
