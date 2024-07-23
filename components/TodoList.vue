@@ -4,6 +4,7 @@
       <NuxtLink :to="`/todos/new`">
         <button>New</button>
       </NuxtLink>
+      <button @click="initializeTodos">Reset</button>
     </div>
     <div v-for="todo in todos" :key="todo.id" class="todo">
       <NuxtLink :to="`/todos/${todo.id}`" class="link">
@@ -31,23 +32,17 @@ type Todo = {
   title: string;
 }
 
-const todos = useStorage<Todo[]>('todos', [
-  {
-    id: 1,
-    status: 'pending',
-    title: 'タスク1',
-  },
-  {
-    id: 2,
-    status: 'working',
-    title: 'タスク2',
-  },
-  {
-    id: 3,
-    status: 'completed',
-    title: 'タスク3',
+const todos = useStorage<Todo[]>('todos', []);
+
+const initializeTodos = async () => {
+  try {
+    const response = await fetch('/api/initialize');
+    const initialData = await response.json();
+    todos.value = initialData;
+  } catch (error) {
+    console.error(error);
   }
-]);
+}
 
 const deleteTodo = (deleteId: number): void => {
   todos.value = todos.value.filter(todo => todo.id !== deleteId);
