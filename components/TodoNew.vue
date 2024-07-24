@@ -1,61 +1,54 @@
 <template>
   <div class="wrapper">
-    <div>
-      <p>Title: <input v-model="inputForm.title"></p>
-      <p>Status:
-      <select v-model="inputForm.status">
-        <option>pending</option>
-        <option>working</option>
-        <option>completed</option>
-      </select>
-      </p>
-    </div>
-    <div>
+    <form @submit.prevent="handleSubmit">
+      <div class="form">
+      <label>
+        Title:
+        <input v-model="inputForm.title" type="text" required>
+      </label>
+      </div>
+      <div class="form">
+        <label>
+          Status:
+          <select v-model="inputForm.status">
+            <option value="pending">pending</option>
+            <option value="working">working</option>
+            <option value="completed">completed</option>
+          </select>
+        </label>
+      </div>
+      <button type="submit">Save</button>
       <NuxtLink :to="`/todos`">
         <button>Back</button>
       </NuxtLink>
-      <button @click="addTodo">Save</button>
-    </div>
+    </form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useStorage } from '@vueuse/core'
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
-
-type Todo = {
-  id: number;
-  status: 'pending' | 'working' | 'completed';
-  title: string;
-}
+import { useTodo } from '~/composables/useTodo'
 
 type InputForm = {
   title: string;
   status: 'pending' | 'working' | 'completed';
 }
 
-//フォームからの値を受ける
+//リアクティブ値としてフォーム初期値をセット
 const inputForm = reactive<InputForm>({
   title: '',
   status: 'pending'
 })
-const todos = useStorage<Todo[]>('todos', [])
 const router = useRouter();
-
-const addTodo = (): void => {
-  const newTodoId = todos.value.length + 1;
-  const newTodo: Todo = {
-    id: newTodoId,
-    title: inputForm.title,
-    status: inputForm.status,
-  }
-  todos.value.push(newTodo)
-  inputForm.title = '';
-  inputForm.status = 'pending';
-  router.push('/todos');
+const { createTodo } = useTodo();
+const handleSubmit = (): void => {
+  createTodo(inputForm, router);
 }
 </script>
 
 <style>
+.form {
+  margin: 20px 0;
+}
 </style>

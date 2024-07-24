@@ -4,27 +4,33 @@
       <NuxtLink :to="`/todos/new`">
         <button>New</button>
       </NuxtLink>
-      <button @click="initializeTodos">Reset</button>
+      <button @click="resetTodos">Reset</button>
     </div>
-    <div v-for="todo in todos" :key="todo.id" class="todo">
-      <NuxtLink :to="`/todos/${todo.id}`" class="link">
-      <ul>
-        <li>Status: {{ todo.status }}</li>
-        <li>Title: {{ todo.title }}</li>
-      </ul>
-      </NuxtLink>
-      <div class="todo-button">
-        <NuxtLink :to="`/todos/${todo.id}/edit`">
-          <button>Edit</button>
+    <div v-if="todos.length">
+      <div v-for="todo in todos" :key="todo.id" class="todo">
+        <NuxtLink :to="`/todos/${todo.id}`" class="link">
+        <ul>
+          <li>Status: {{ todo.status }}</li>
+          <li>Title: {{ todo.title }}</li>
+        </ul>
         </NuxtLink>
-        <button @click="deleteTodo(todo.id)">Delete</button>
+        <div class="todo-button">
+          <NuxtLink :to="`/todos/${todo.id}/edit`">
+            <button>Edit</button>
+          </NuxtLink>
+          <button @click="deleteTodo(todo.id)">Delete</button>
+        </div>
       </div>
+    </div>
+    <div v-else>
+      <p>Todo not found.</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core'
+import { useTodo } from '~/composables/useTodo'
 
 type Todo = {
   id: number;
@@ -32,22 +38,9 @@ type Todo = {
   title: string;
 }
 
+//localStorageから取得
 const todos = useStorage<Todo[]>('todos', []);
-
-const initializeTodos = async () => {
-  try {
-    const response = await fetch('/api/initialize');
-    const initialData = await response.json();
-    todos.value = initialData;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-const deleteTodo = (deleteId: number): void => {
-  todos.value = todos.value.filter(todo => todo.id !== deleteId);
-}
-
+const { resetTodos, deleteTodo } = useTodo();
 </script>
 
 <style>
