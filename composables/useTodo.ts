@@ -55,10 +55,21 @@ const updateTodo = async (inputForm: { title: string; status: 'pending' | 'worki
     await router.push('/todos');
 }
 
+const getStatusColor = (status: 'pending' | 'working' | 'completed') => {
+    if (status === 'pending') {
+        return { background: 'red' }
+    } else if (status === 'working') {
+        return { background: 'yellow' }
+    } else if (status === 'completed') {
+        return { background: 'green' }
+    }
+}
+
 export const useTodo = () => ({
     resetTodos,
     deleteTodo,
     getTodo,
     createTodo,
     updateTodo,
+    getStatusColor,
 })

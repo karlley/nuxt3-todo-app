@@ -10,7 +10,7 @@
       <div v-for="todo in todos" :key="todo.id" class="todo">
         <NuxtLink :to="`/todos/${todo.id}`" class="link">
         <ul>
-          <li>Status: {{ todo.status }}</li>
+          <li>Status: <span v-bind:style="getStatusColor(todo.status)">{{ todo.status }}</span></li>
           <li>Title: {{ todo.title }}</li>
         </ul>
         </NuxtLink>
@@ -40,7 +40,7 @@ type Todo = {
 
 //localStorageから取得
 const todos = useStorage<Todo[]>('todos', []);
-const { resetTodos, deleteTodo } = useTodo();
+const { resetTodos, deleteTodo, getStatusColor } = useTodo();
 </script>
 
 <style>
@@ -87,4 +87,6 @@ const { resetTodos, deleteTodo } = useTodo();
 .todo-button button {
   margin: 10px;
 }
+
+
 </style>
