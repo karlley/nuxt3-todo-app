@@ -1,6 +1,8 @@
 <template>
   <h1>Todo App</h1>
-  <NuxtPage />
+  <client-only>
+    <NuxtPage />
+  </client-only>
 </template>
 
 <script setup lang="ts">
