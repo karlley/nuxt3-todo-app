@@ -1,5 +1,6 @@
 import { useStorage } from '@vueuse/core';
 import type { Router } from 'vue-router';
+import { ref } from "vue";
 
 type Todo = {
     id: number;
@@ -12,8 +13,6 @@ const todos = useStorage<Todo[]>('todos', []);
 const resetTodos = async () => {
     try {
         const response = await fetch('/api/initialize');
-        // const initialData = await response.json();
-        // todos.value = initialData;
         todos.value = await response.json();
     } catch (error) {
         console.error(error);
@@ -65,11 +64,29 @@ const getStatusColor = (status: 'pending' | 'working' | 'completed') => {
     }
 }
 
+const pending = ref(true);
+const working = ref(true);
+const completed = ref(true);
+const filteredTodos = computed(() => {
+    return todos.value.filter(todo => {
+        const isPending = todo.status === 'pending' && pending.value;
+        const isWorking = todo.status === 'working' && working.value;
+        const isCompleted = todo.status === 'completed' && completed.value;
+
+        return isPending || isWorking || isCompleted;
+    });
+});
+
 export const useTodo = () => ({
+    todos,
+    pending,
+    working,
+    completed,
     resetTodos,
     deleteTodo,
     getTodo,
     createTodo,
     updateTodo,
     getStatusColor,
+    filteredTodos,
 })

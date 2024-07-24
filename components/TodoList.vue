@@ -6,11 +6,25 @@
       </NuxtLink>
       <button @click="resetTodos">Reset</button>
     </div>
-    <div v-if="todos.length">
-      <div v-for="todo in todos" :key="todo.id" class="todo">
+    <div v-if="todos.length" class="sort">
+      <label>
+        <span>pending</span>
+        <input v-model="pending" type="checkbox" checked >
+      </label>
+      <label>
+        <span>working</span>
+        <input v-model="working" type="checkbox" checked >
+      </label>
+      <label>
+        <span>completed</span>
+        <input v-model="completed" type="checkbox" checked >
+      </label>
+    </div>
+    <div v-if="filteredTodos.length">
+      <div v-for="todo in filteredTodos" :key="todo.id" class="todo">
         <NuxtLink :to="`/todos/${todo.id}`" class="link">
         <ul>
-          <li>Status: <span v-bind:style="getStatusColor(todo.status)">{{ todo.status }}</span></li>
+          <li>Status: <span :style="getStatusColor(todo.status)">{{ todo.status }}</span></li>
           <li>Title: {{ todo.title }}</li>
         </ul>
         </NuxtLink>
@@ -29,18 +43,9 @@
 </template>
 
 <script setup lang="ts">
-import { useStorage } from '@vueuse/core'
 import { useTodo } from '~/composables/useTodo'
 
-type Todo = {
-  id: number;
-  status: 'pending' | 'working' | 'completed';
-  title: string;
-}
-
-//localStorageから取得
-const todos = useStorage<Todo[]>('todos', []);
-const { resetTodos, deleteTodo, getStatusColor } = useTodo();
+const { todos, pending, working, completed, resetTodos, deleteTodo, getStatusColor, filteredTodos } = useTodo();
 </script>
 
 <style>
@@ -55,6 +60,20 @@ const { resetTodos, deleteTodo, getStatusColor } = useTodo();
   padding: 5px 10px;
   border: 1px solid black;
   margin: 30px 20px;
+}
+
+.sort {
+  margin: 30px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.sort label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 20px;
 }
 
 .link {
@@ -87,6 +106,4 @@ const { resetTodos, deleteTodo, getStatusColor } = useTodo();
 .todo-button button {
   margin: 10px;
 }
-
-
 </style>
