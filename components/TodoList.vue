@@ -45,17 +45,11 @@
 
 <script setup lang="ts">
 import { useTodo } from '~/composables/useTodo'
+import { useModal } from '~/composables/useModal'
 
 const { todos, pending, working, completed, resetTodos, deleteTodo, getStatusColor, filteredTodos } = useTodo();
-const selectedTodoId = ref<number | null>(null)
-const isModalOpen = ref(false)
-const openModal = (id: number) => {
-  selectedTodoId.value = id;
-  isModalOpen.value = true;
-}
-const closeModal = () => {
-  isModalOpen.value = false;
-}
+const { selectedTodoId, isModalOpen, openModal, closeModal  } = useModal();
+
 const handleConfirm = () => {
   deleteTodo(selectedTodoId.value);
   closeModal();

@@ -17,10 +17,10 @@
           </select>
         </label>
       </div>
-      <button type="submit">Save</button>
       <NuxtLink :to="`/todos`">
         <button>Back</button>
       </NuxtLink>
+      <button type="submit">Save</button>
     </form>
   </div>
 </template>
