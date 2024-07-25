@@ -32,7 +32,7 @@
           <NuxtLink :to="`/todos/${todo.id}/edit`">
             <button>Edit</button>
           </NuxtLink>
-          <button @click="deleteTodo(todo.id)">Delete</button>
+          <button @click="openModal(todo.id)">Delete</button>
         </div>
       </div>
     </div>
@@ -40,12 +40,26 @@
       <p>Todo not found.</p>
     </div>
   </div>
+  <ComfirmModal v-if="isModalOpen" @close-modal="closeModal" @handle-confirm="handleConfirm"/>
 </template>
 
 <script setup lang="ts">
 import { useTodo } from '~/composables/useTodo'
 
 const { todos, pending, working, completed, resetTodos, deleteTodo, getStatusColor, filteredTodos } = useTodo();
+const selectedTodoId = ref<number | null>(null)
+const isModalOpen = ref(false)
+const openModal = (id: number) => {
+  selectedTodoId.value = id;
+  isModalOpen.value = true;
+}
+const closeModal = () => {
+  isModalOpen.value = false;
+}
+const handleConfirm = () => {
+  deleteTodo(selectedTodoId.value);
+  closeModal();
+};
 </script>
 
 <style>

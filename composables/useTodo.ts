@@ -19,7 +19,7 @@ const resetTodos = async () => {
     }
 }
 
-const deleteTodo = (deleteId: number): void => {
+const deleteTodo = (deleteId: number | null): void => {
     todos.value = todos.value.filter(todo => todo.id !== deleteId);
 }
 
