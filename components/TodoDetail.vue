@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div v-if="todo" class="todo">
       <ul>
-        <li>Status: {{ todo.status }}</li>
+        <li>Status:<span :style="getStatusColor(todo.status)">{{ todo.status }}</span></li>
         <li>Title: {{ todo.title }}</li>
       </ul>
     </div>
@@ -22,7 +22,7 @@ import { useRoute } from 'vue-router';
 import { useTodo } from '~/composables/useTodo'
 
 const route = useRoute();
-const { getTodo } = useTodo();
+const { getTodo, getStatusColor } = useTodo();
 const selectedTodoId = Number(route.params.id)
 const todo = getTodo(selectedTodoId);
 </script>
