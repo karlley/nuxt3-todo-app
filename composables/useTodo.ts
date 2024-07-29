@@ -10,13 +10,16 @@ type Todo = {
 
 const todos = useStorage<Todo[]>('todos', []);
 
+const resetSort = () => {
+    pending.value = true;
+    working.value = true;
+    completed.value = true;
+}
 const resetTodos = async () => {
     try {
         const response = await fetch('/api/initialize');
         todos.value = await response.json();
-        pending.value = true;
-        working.value = true;
-        completed.value = true;
+        resetSort();
     } catch (error) {
         console.error(error);
     }
@@ -41,6 +44,7 @@ const createTodo = async (inputForm: { title: string; status: 'pending' | 'worki
     inputForm.title = '';
     inputForm.status = 'pending';
     await router.push('/todos');
+    resetSort();
 }
 
 const updateTodo = async (inputForm: { title: string; status: 'pending' | 'working' | 'completed'}, router: Router, selectedTodoId: number): Promise<void> => {
@@ -55,6 +59,7 @@ const updateTodo = async (inputForm: { title: string; status: 'pending' | 'worki
         }
     }
     await router.push('/todos');
+    resetSort();
 }
 
 const getStatusColor = (status: 'pending' | 'working' | 'completed') => {
