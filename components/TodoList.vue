@@ -48,58 +48,23 @@ import { useTodo } from '~/composables/useTodo'
 import { useModal } from '~/composables/useModal'
 import { useRoute, useRouter } from 'vue-router'
 
-const { todos, pending, working, completed, resetTodos, deleteTodo, getStatusColor, filteredTodos } = useTodo();
+const { todos, pending, working, completed, resetTodos, deleteTodo, getStatusColor, filteredTodos, keepSortQuery, updateSortQuery } = useTodo();
 const { selectedTodoId, isModalOpen, openModal, closeModal  } = useModal();
+const route = useRoute();
+const router = useRouter();
 
 const handleConfirm = () => {
   deleteTodo(selectedTodoId.value);
   closeModal();
 };
 
-const route = useRoute();
-const router = useRouter();
-const keepSearchParams = () => {
-  //クエリにtrueがある場合にtrueを初期クエリにセット
-  const initialQuery = {
-    pending: route.query.pending === 'true',
-    working: route.query.working === 'true',
-    completed: route.query.completed === 'true',
-  }
-  //クエリが発生しているか
-  const statusQueryKeys = ['pending', 'working', 'completed'];
-  const hasStatusQueries = statusQueryKeys.some(key => Object.hasOwn(route.query, key))
-  //クエリ有りでソート状態を更新
-  if (hasStatusQueries) {
-    pending.value = initialQuery.pending;
-    working.value = initialQuery.working;
-    completed.value = initialQuery.completed;
-  } else {
-    pending.value = false;
-    working.value = false;
-    completed.value = false;
-  }
-  //追加用クエリ
-  const newQuery = {
-    pending: initialQuery.pending ? 'true' : undefined,
-    working: initialQuery.working ? 'true' : undefined,
-    completed: initialQuery.completed ? 'true' : undefined,
-  }
-  //クエリが存在する場合のみクエリを連結
-  router.push({query: newQuery})
-}
-
 onMounted(() => {
-  keepSearchParams()
+  keepSortQuery(route, router)
 })
 
 //チェックボックスのソート状態変更時にクエリを連結
 watch([pending, working, completed], () => {
-  const updateQuery = {
-    pending: pending.value ? 'true' : undefined,
-    working: working.value ? 'true' : undefined,
-    completed: completed.value ? 'true' : undefined,
-  }
-  router.push({query: updateQuery});
+  updateSortQuery(router)
 })
 </script>
 

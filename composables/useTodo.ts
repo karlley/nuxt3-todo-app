@@ -1,5 +1,5 @@
 import { useStorage } from '@vueuse/core';
-import type { Router } from 'vue-router';
+import type { RouteLocationNormalizedLoaded, Router} from 'vue-router';
 import { ref } from "vue";
 
 type Todo = {
@@ -77,6 +77,45 @@ const filteredTodos = computed(() => {
     });
 });
 
+const keepSortQuery = async (route: RouteLocationNormalizedLoaded, router: Router) => {
+    //クエリにtrueがある場合にtrueを初期クエリにセット
+    const initialQuery = {
+        pending: route.query.pending === 'true',
+        working: route.query.working === 'true',
+        completed: route.query.completed === 'true',
+    }
+    // クエリが発生しているか
+    const statusQueryKeys = ['pending', 'working', 'completed'];
+    const hasStatusQueries = statusQueryKeys.some(key => Object.hasOwn(route.query, key))
+    // クエリ有りでソート状態を更新
+    if (hasStatusQueries) {
+        pending.value = initialQuery.pending;
+        working.value = initialQuery.working;
+        completed.value = initialQuery.completed;
+    } else {
+        pending.value = false;
+        working.value = false;
+        completed.value = false;
+    }
+    // 追加用クエリ
+    const newQuery = {
+        pending: initialQuery.pending ? 'true' : undefined,
+        working: initialQuery.working ? 'true' : undefined,
+        completed: initialQuery.completed ? 'true' : undefined,
+    }
+    // クエリが存在する場合のみクエリを連結
+    await router.push({query: newQuery});
+}
+
+const updateSortQuery = async (router: Router) => {
+    const updateQuery = {
+        pending: pending.value ? 'true' : undefined,
+        working: working.value ? 'true' : undefined,
+        completed: completed.value ? 'true' : undefined,
+    }
+    await router.push({query: updateQuery});
+}
+
 export const useTodo = () => ({
     todos,
     pending,
@@ -89,4 +128,6 @@ export const useTodo = () => ({
     updateTodo,
     getStatusColor,
     filteredTodos,
+    keepSortQuery,
+    updateSortQuery,
 })
