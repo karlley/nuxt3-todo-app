@@ -14,6 +14,9 @@ const resetTodos = async () => {
     try {
         const response = await fetch('/api/initialize');
         todos.value = await response.json();
+        pending.value = true;
+        working.value = true;
+        completed.value = true;
     } catch (error) {
         console.error(error);
     }
