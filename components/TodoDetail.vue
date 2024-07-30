@@ -22,9 +22,12 @@ import { useRoute } from 'vue-router';
 import { useTodo } from '~/composables/useTodo'
 
 const route = useRoute();
-const { getTodo, getStatusColor } = useTodo();
-const selectedTodoId = Number(route.params.id)
-const todo = getTodo(selectedTodoId);
+const { todo, getTodo, getStatusColor } = useTodo();
+
+onMounted(async () => {
+  const selectedId = Number(route.params.id)
+  todo.value = await getTodo(selectedId);
+})
 </script>
 
 <style>

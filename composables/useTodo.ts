@@ -10,6 +10,8 @@ type Todo = {
 
 const todos = useStorage<Todo[]>('todos', []);
 
+const todo = ref({});
+
 const resetSort = () => {
     pending.value = true;
     working.value = true;
@@ -39,8 +41,13 @@ const deleteTodo = (deleteId: number | null): void => {
     todos.value = todos.value.filter(todo => todo.id !== deleteId);
 }
 
-const getTodo = (selectedTodoId: number) => {
-    return todos.value.find((todo) => todo.id === selectedTodoId);
+const getTodo = async (selectedId: number) => {
+    try {
+        const response = await fetch(`/api/todos/${selectedId}`);
+        return response.json();
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 const createTodo = async (inputForm: { title: string; status: 'pending' | 'working' | 'completed' }, router: Router): Promise<void> => {
@@ -136,6 +143,7 @@ const updateSortQuery = async (router: Router) => {
 
 export const useTodo = () => ({
     todos,
+    todo,
     pending,
     working,
     completed,
