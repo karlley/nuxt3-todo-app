@@ -48,7 +48,7 @@ import { useTodo } from '~/composables/useTodo'
 import { useModal } from '~/composables/useModal'
 import { useRoute, useRouter } from 'vue-router'
 
-const { todos, pending, working, completed, resetTodos, deleteTodo, getStatusColor, filteredTodos, keepSortQuery, updateSortQuery } = useTodo();
+const { todos, pending, working, completed, getTodos,resetTodos, deleteTodo, getStatusColor, filteredTodos, keepSortQuery, updateSortQuery } = useTodo();
 const { selectedTodoId, isModalOpen, openModal, closeModal  } = useModal();
 const route = useRoute();
 const router = useRouter();
@@ -60,6 +60,7 @@ const handleConfirm = () => {
 
 onMounted(() => {
   keepSortQuery(route, router)
+  getTodos();
 })
 
 //チェックボックスのソート状態変更時にクエリを連結

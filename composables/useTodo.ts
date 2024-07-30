@@ -15,6 +15,16 @@ const resetSort = () => {
     working.value = true;
     completed.value = true;
 }
+
+const getTodos = async () => {
+    try {
+        const response = await fetch('/api/todos');
+        todos.value = await response.json();
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 const resetTodos = async () => {
     try {
         const response = await fetch('/api/initialize');
@@ -129,6 +139,7 @@ export const useTodo = () => ({
     pending,
     working,
     completed,
+    getTodos,
     resetTodos,
     deleteTodo,
     getTodo,
