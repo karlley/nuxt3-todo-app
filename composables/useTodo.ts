@@ -1,4 +1,3 @@
-import { useStorage } from '@vueuse/core';
 import type { RouteLocationNormalizedLoaded, Router} from 'vue-router';
 import { ref } from "vue";
 
@@ -8,9 +7,8 @@ type Todo = {
     title: string;
 }
 
-const todos = useStorage<Todo[]>('todos', []);
-
-const todo = ref({});
+const todos = ref<Todo[]>([]);
+const todo = ref<Todo | null >(null);
 
 const resetSort = () => {
     pending.value = true;
@@ -29,9 +27,9 @@ const getTodos = async () => {
 
 const resetTodos = async () => {
     try {
-        const response = await fetch('/api/initialize');
-        todos.value = await response.json();
+        await fetch('/api/todos/reset');
         resetSort();
+        await getTodos();
     } catch (error) {
         console.error(error);
     }

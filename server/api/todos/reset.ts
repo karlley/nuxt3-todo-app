@@ -1,5 +1,9 @@
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient();
+
 export default defineEventHandler(async () => {
-    return [
+    const initialTodos = [
         {
             id: 1,
             status: 'pending',
@@ -16,4 +20,15 @@ export default defineEventHandler(async () => {
             title: 'タスク3',
         }
     ];
+
+    try {
+        //全削除
+        await prisma.todo.deleteMany({});
+        //初期データ追加
+        await prisma.todo.createMany({
+            data: initialTodos
+        })
+    } catch (error) {
+        console.error(error);
+    }
 });
