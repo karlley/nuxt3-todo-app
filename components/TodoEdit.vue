@@ -36,17 +36,22 @@ type InputForm = {
 }
 
 const route = useRoute(); //パラメータ取得
-const selectedTodoId = Number(route.params.id);
 const { getTodo, updateTodo } = useTodo();
-const todo = getTodo(selectedTodoId);
 //リアクティブ値としてフォーム初期値をセット
 const inputForm = reactive<InputForm>({
-  title: todo?.title ?? '',
-  status: todo?.status ?? 'pending'
+  title: '',
+  status: 'pending'
+})
+
+const selectedId = Number(route.params.id)
+onMounted(async () => {
+  const fetchedTodo = await getTodo(selectedId);
+  inputForm.title = fetchedTodo.title;
+  inputForm.status = fetchedTodo.status;
 })
 const router = useRouter();
 const handleSubmit = (): void => {
-  updateTodo(inputForm, router, selectedTodoId);
+  updateTodo(inputForm, router, selectedId);
 }
 </script>
 

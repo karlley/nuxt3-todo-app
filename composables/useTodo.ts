@@ -38,7 +38,7 @@ const resetTodos = async () => {
 }
 
 
-const deleteTodo = async (deleteId: number | null): void => {
+const deleteTodo = async (deleteId: number | null): Promise<void> => {
     try {
        const response = await fetch('/api/todos/delete', {
            method: 'DELETE',
@@ -82,19 +82,25 @@ const createTodo = async (inputForm: { title: string; status: 'pending' | 'worki
     }
 }
 
-const updateTodo = async (inputForm: { title: string; status: 'pending' | 'working' | 'completed'}, router: Router, selectedTodoId: number): Promise<void> => {
-    const index = todos.value.findIndex((todo) => todo.id === selectedTodoId);
-    //findIndexの返り値でtodoの存在確認(アンマッチ時は-1)
-    if (index !== -1) {
-        //対象todoのプロパティを保持しながら更新
-        todos.value[index] = {
-            ...todos.value[index],
-            title: inputForm.title,
-            status: inputForm.status
-        }
+const updateTodo = async (inputForm: { title: string; status: 'pending' | 'working' | 'completed'}, router: Router, selectedId: number): Promise<void> => {
+    try {
+        const response = await fetch('/api/todos/update', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            //inputFormに追加でidを加える
+            body: JSON.stringify({ ...inputForm, id: selectedId }
+            ),
+        });
+        inputForm.title = '';
+        inputForm.status = 'pending';
+        resetSort();
+        const updateTodo = await response.json();
+        await router.push(`/todos/${updateTodo.id}`);
+    } catch (error) {
+        console.error(error);
     }
-    await router.push('/todos');
-    resetSort();
 }
 
 const getStatusColor = (status: 'pending' | 'working' | 'completed') => {
