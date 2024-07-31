@@ -37,8 +37,21 @@ const resetTodos = async () => {
     }
 }
 
-const deleteTodo = (deleteId: number | null): void => {
-    todos.value = todos.value.filter(todo => todo.id !== deleteId);
+
+const deleteTodo = async (deleteId: number | null): void => {
+    try {
+       const response = await fetch('/api/todos/delete', {
+           method: 'DELETE',
+           headers: {
+               'Content-Type': 'application/json'
+           },
+           body: JSON.stringify(deleteId),
+       });
+       console.log(response);
+       await getTodos();
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 const getTodo = async (selectedId: number) => {
