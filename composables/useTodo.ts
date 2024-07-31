@@ -46,22 +46,27 @@ const getTodo = async (selectedId: number) => {
         const response = await fetch(`/api/todos/${selectedId}`);
         return response.json();
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 
 const createTodo = async (inputForm: { title: string; status: 'pending' | 'working' | 'completed' }, router: Router): Promise<void> => {
-    const newTodoId = todos.value.length + 1;
-    const newTodo: Todo = {
-        id: newTodoId,
-        title: inputForm.title,
-        status: inputForm.status,
+    try {
+        const response = await fetch('/api/todos/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(inputForm),
+        });
+        inputForm.title = '';
+        inputForm.status = 'pending';
+        resetSort();
+        const newTodo = await response.json();
+        await router.push(`/todos/${newTodo.id}`);
+    } catch (error) {
+        console.error(error);
     }
-    todos.value.push(newTodo);
-    inputForm.title = '';
-    inputForm.status = 'pending';
-    await router.push('/todos');
-    resetSort();
 }
 
 const updateTodo = async (inputForm: { title: string; status: 'pending' | 'working' | 'completed'}, router: Router, selectedTodoId: number): Promise<void> => {
