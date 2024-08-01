@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Weekly Weather</h2>
+    <h2>Today's Weather</h2>
     <WeeklyWeather />
   </div>
 </template>
