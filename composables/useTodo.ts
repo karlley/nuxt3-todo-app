@@ -140,9 +140,9 @@ const keepSortQuery = async (route: RouteLocationNormalizedLoaded, router: Route
         working.value = initialQuery.working;
         completed.value = initialQuery.completed;
     } else {
-        pending.value = false;
-        working.value = false;
-        completed.value = false;
+        pending.value = true;
+        working.value = true;
+        completed.value = true;
     }
     // 追加用クエリ
     const newQuery = {
