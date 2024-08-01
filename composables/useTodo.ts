@@ -170,6 +170,7 @@ export const useTodo = () => ({
     working,
     completed,
     getTodos,
+    resetSort,
     resetTodos,
     deleteTodo,
     getTodo,
