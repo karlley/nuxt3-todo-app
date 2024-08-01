@@ -5,6 +5,9 @@
         <button>New</button>
       </NuxtLink>
       <button @click="resetTodos">Reset</button>
+      <NuxtLink :to="`/weather`">
+        <button>Weather</button>
+      </NuxtLink>
     </div>
     <div v-if="todos.length" class="sort">
       <label>
