@@ -10,6 +10,22 @@ type Todo = {
 
 const todos = ref<Todo[]>([]);
 const todo = ref<Todo | null >(null);
+const pending = useStorage<boolean>('pending', true);
+const working = useStorage<boolean>('working' , true);
+const completed = useStorage<boolean>('completed', true);
+
+const filteredTodos = computed(() => {
+    //配列型でソートされたTodoを返す
+    return todos.value.filter(todo => {
+        //todo.statusのpending、working、completedがソート状態とマッチしていればtrue
+        const isPending = todo.status === 'pending' && pending.value;
+        const isWorking = todo.status === 'working' && working.value;
+        const isCompleted = todo.status === 'completed' && completed.value;
+
+        //ソート状態がマッチしたtodoのみ返す
+        return isPending || isWorking || isCompleted;
+    });
+});
 
 const resetSort = () => {
     pending.value = true;
@@ -26,36 +42,20 @@ const getTodos = async () => {
     }
 }
 
-const resetTodos = async () => {
+const getTodo = async (selectedId: number) => {
     try {
-        await fetch('/api/todos/reset');
-        resetSort();
-        await getTodos();
+        const response = await fetch(`/api/todos/${selectedId}`);
+        return response.json();
     } catch (error) {
         console.error(error);
     }
 }
 
-
-const deleteTodo = async (deleteId: number | null): Promise<void> => {
+const resetTodos = async () => {
     try {
-       await fetch('/api/todos/delete', {
-           method: 'DELETE',
-           headers: {
-               'Content-Type': 'application/json'
-           },
-           body: JSON.stringify(deleteId),
-       });
-       await getTodos();
-    } catch (error) {
-        console.error(error)
-    }
-}
-
-const getTodo = async (selectedId: number) => {
-    try {
-        const response = await fetch(`/api/todos/${selectedId}`);
-        return response.json();
+        await fetch('/api/todos/reset');
+        resetSort();
+        await getTodos();
     } catch (error) {
         console.error(error);
     }
@@ -77,6 +77,21 @@ const createTodo = async (inputForm: { title: string; status: 'pending' | 'worki
         await router.push(`/todos/${newTodo.id}`);
     } catch (error) {
         console.error(error);
+    }
+}
+
+const deleteTodo = async (deleteId: number | null): Promise<void> => {
+    try {
+        await fetch('/api/todos/delete', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(deleteId),
+        });
+        await getTodos();
+    } catch (error) {
+        console.error(error)
     }
 }
 
@@ -111,22 +126,6 @@ const getStatusColor = (status: 'pending' | 'working' | 'completed') => {
     }
 }
 
-const pending = useStorage<boolean>('pending', true);
-const working = useStorage<boolean>('working' , true);
-const completed = useStorage<boolean>('completed', true);
-
-const filteredTodos = computed(() => {
-    //配列型でソートされたTodoを返す
-    return todos.value.filter(todo => {
-        //todo.statusのpending、working、completedがソート状態とマッチしていればtrue
-        const isPending = todo.status === 'pending' && pending.value;
-        const isWorking = todo.status === 'working' && working.value;
-        const isCompleted = todo.status === 'completed' && completed.value;
-
-        //ソート状態がマッチしたtodoのみ返す
-        return isPending || isWorking || isCompleted;
-    });
-});
 
 export const useTodo = () => ({
     todos,
