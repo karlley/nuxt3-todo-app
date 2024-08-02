@@ -1,12 +1,7 @@
 import { useStorage } from '@vueuse/core';
-import type { Router} from 'vue-router';
 import { ref } from "vue";
-
-type Todo = {
-    id: number;
-    status: 'pending' | 'working' | 'completed';
-    title: string;
-}
+import type { Router} from 'vue-router';
+import type { Todo } from '~/types/types';
 
 const todos = ref<Todo[]>([]);
 const todo = ref<Todo | null >(null);

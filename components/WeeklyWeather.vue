@@ -17,12 +17,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import axios from 'axios';
-
-interface Weather {
-  weather: { icon: string; description: string }[];
-  main: { temp: number };
-  wind: { speed: number };
-}
+import type { Weather } from '~/types/types'
 
 const config = useRuntimeConfig();
 const API_KEY = config.public.openWeatherApiKey;

@@ -29,11 +29,7 @@
 import { reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useTodo } from '~/composables/useTodo';
-
-type InputForm = {
-  title: string;
-  status: 'pending' | 'working' | 'completed';
-}
+import type { InputForm } from '~/types/types'
 
 const route = useRoute(); //パラメータ取得
 const { getTodo, updateTodo } = useTodo();

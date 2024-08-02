@@ -29,11 +29,7 @@
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useTodo } from '~/composables/useTodo'
-
-type InputForm = {
-  title: string;
-  status: 'pending' | 'working' | 'completed';
-}
+import type { InputForm } from '~/types/types'
 
 //リアクティブ値としてフォーム初期値をセット
 const inputForm = reactive<InputForm>({
