@@ -1,4 +1,5 @@
-import type { RouteLocationNormalizedLoaded, Router} from 'vue-router';
+import { useStorage } from '@vueuse/core';
+import type { Router} from 'vue-router';
 import { ref } from "vue";
 
 type Todo = {
@@ -111,48 +112,22 @@ const getStatusColor = (status: 'pending' | 'working' | 'completed') => {
     }
 }
 
-const pending = ref(true);
-const working = ref(true);
-const completed = ref(true);
+const pending = useStorage<boolean>('pending', true);
+const working = useStorage<boolean>('working' , true);
+const completed = useStorage<boolean>('completed', true);
+
 const filteredTodos = computed(() => {
+    //配列型でソートされたTodoを返す
     return todos.value.filter(todo => {
+        //todo.statusのpending、working、completedがソート状態とマッチしていればtrue
         const isPending = todo.status === 'pending' && pending.value;
         const isWorking = todo.status === 'working' && working.value;
         const isCompleted = todo.status === 'completed' && completed.value;
 
+        //ソート状態がマッチしたtodoのみ返す
         return isPending || isWorking || isCompleted;
     });
 });
-
-const keepSortQuery = async (route: RouteLocationNormalizedLoaded, router: Router) => {
-    //クエリにtrueがある場合にtrueを初期クエリにセット
-    const initialQuery = {
-        pending: route.query.pending === 'true',
-        working: route.query.working === 'true',
-        completed: route.query.completed === 'true',
-    }
-    // クエリが発生しているか
-    const statusQueryKeys = ['pending', 'working', 'completed'];
-    const hasStatusQueries = statusQueryKeys.some(key => Object.hasOwn(route.query, key))
-    // クエリ有りでソート状態を更新
-    if (hasStatusQueries) {
-        pending.value = initialQuery.pending;
-        working.value = initialQuery.working;
-        completed.value = initialQuery.completed;
-    } else {
-        pending.value = true;
-        working.value = true;
-        completed.value = true;
-    }
-    // 追加用クエリ
-    const newQuery = {
-        pending: initialQuery.pending ? 'true' : undefined,
-        working: initialQuery.working ? 'true' : undefined,
-        completed: initialQuery.completed ? 'true' : undefined,
-    }
-    // クエリが存在する場合のみクエリを連結
-    await router.push({query: newQuery});
-}
 
 const updateSortQuery = async (router: Router) => {
     const updateQuery = {
@@ -178,6 +153,5 @@ export const useTodo = () => ({
     updateTodo,
     getStatusColor,
     filteredTodos,
-    keepSortQuery,
     updateSortQuery,
 })

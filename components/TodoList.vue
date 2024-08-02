@@ -49,12 +49,9 @@
 <script setup lang="ts">
 import { useTodo } from '~/composables/useTodo'
 import { useModal } from '~/composables/useModal'
-import { useRoute, useRouter } from 'vue-router'
 
-const { todos, pending, working, completed, getTodos,resetTodos, deleteTodo, getStatusColor, filteredTodos, keepSortQuery, updateSortQuery } = useTodo();
+const { todos, pending, working, completed, getTodos,resetTodos, deleteTodo, getStatusColor, filteredTodos } = useTodo();
 const { selectedTodoId, isModalOpen, openModal, closeModal  } = useModal();
-const route = useRoute();
-const router = useRouter();
 
 const handleConfirm = () => {
   deleteTodo(selectedTodoId.value);
@@ -62,13 +59,7 @@ const handleConfirm = () => {
 };
 
 onMounted(() => {
-  keepSortQuery(route, router)
   getTodos();
-})
-
-//チェックボックスのソート状態変更時にクエリを連結
-watch([pending, working, completed], () => {
-  updateSortQuery(router)
 })
 </script>
 
