@@ -1,7 +1,9 @@
 <template>
   <div>
     <h2>Today's Weather</h2>
-    <WeeklyWeather />
+    <client-only>
+      <TodaysWeather />
+    </client-only>
   </div>
 </template>
 
