@@ -26,7 +26,6 @@ interface Weather {
 
 const config = useRuntimeConfig();
 const API_KEY = config.public.openWeatherApiKey;
-console.log(API_KEY)
 const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
 const city = 'Fukuoka';
 const weather = ref<Weather | null>(null);
@@ -41,7 +40,6 @@ async function fetchWeather() {
         appid: API_KEY,
       },
     });
-    console.log(response.data);
     weather.value = response.data;
     if (weather.value) {
       iconUrl.value = `https://openweathermap.org/img/wn/${weather.value.weather[0].icon}@2x.png`;

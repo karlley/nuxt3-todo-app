@@ -13,6 +13,6 @@ export default defineEventHandler( async (event) => {
             where: { id: selectedId },
         });
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 });

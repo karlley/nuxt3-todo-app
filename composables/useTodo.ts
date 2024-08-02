@@ -46,10 +46,9 @@ const deleteTodo = async (deleteId: number | null): Promise<void> => {
            },
            body: JSON.stringify(deleteId),
        });
-       console.log(response);
        await getTodos();
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 }
 
