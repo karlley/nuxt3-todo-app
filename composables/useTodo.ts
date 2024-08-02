@@ -128,15 +128,6 @@ const filteredTodos = computed(() => {
     });
 });
 
-const updateSortQuery = async (router: Router) => {
-    const updateQuery = {
-        pending: pending.value ? 'true' : undefined,
-        working: working.value ? 'true' : undefined,
-        completed: completed.value ? 'true' : undefined,
-    }
-    await router.push({query: updateQuery});
-}
-
 export const useTodo = () => ({
     todos,
     todo,
@@ -152,5 +143,4 @@ export const useTodo = () => ({
     updateTodo,
     getStatusColor,
     filteredTodos,
-    updateSortQuery,
 })
