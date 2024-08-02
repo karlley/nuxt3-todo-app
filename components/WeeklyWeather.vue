@@ -31,6 +31,10 @@ const city = 'Fukuoka';
 const weather = ref<Weather | null>(null);
 const iconUrl = ref<string>('');
 
+onMounted(() => {
+  fetchWeather();
+});
+
 async function fetchWeather() {
   try {
     const response = await axios.get(BASE_URL, {
@@ -48,10 +52,6 @@ async function fetchWeather() {
     console.error(error);
   }
 }
-
-onMounted(() => {
-  fetchWeather();
-});
 </script>
 
 <style>

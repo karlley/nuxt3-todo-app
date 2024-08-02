@@ -53,14 +53,14 @@ import { useModal } from '~/composables/useModal'
 const { todos, pending, working, completed, getTodos,resetTodos, deleteTodo, getStatusColor, filteredTodos } = useTodo();
 const { selectedTodoId, isModalOpen, openModal, closeModal  } = useModal();
 
+onMounted(() => {
+  getTodos();
+})
+
 const handleConfirm = () => {
   deleteTodo(selectedTodoId.value);
   closeModal();
 };
-
-onMounted(() => {
-  getTodos();
-})
 </script>
 
 <style>
