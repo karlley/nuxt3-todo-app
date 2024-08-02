@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div v-if="weather">
-      <div class="weather-icon"><img :src="iconUrl" :alt="weather.weather[0].description" /></div>
+      <div class="weather-icon"><img :src="iconUrl" :alt="weather.weather[0].description" ></div>
       <p><strong>Temperature:</strong> {{ weather.main.temp }} ℃</p>
       <p><strong>Wind Speed:</strong> {{ weather.wind.speed}} m/s</p>
     </div>

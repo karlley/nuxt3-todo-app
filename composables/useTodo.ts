@@ -39,7 +39,7 @@ const resetTodos = async () => {
 
 const deleteTodo = async (deleteId: number | null): Promise<void> => {
     try {
-       const response = await fetch('/api/todos/delete', {
+       await fetch('/api/todos/delete', {
            method: 'DELETE',
            headers: {
                'Content-Type': 'application/json'
